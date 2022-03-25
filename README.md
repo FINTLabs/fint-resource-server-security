@@ -11,7 +11,7 @@ Add the following dependency to your `build.gradle` file:
 
 # Usage
 
-## Example: authorize an organisation
+## Example: Authorize an organisation
 ```java
 @EnableWebFluxSecurity
 public class SecurityConfiguration {
@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 }
 ```
 
-## Example: authorize a role
+## Example: Authorize a role
 ```java
 @EnableWebFluxSecurity
 public class SecurityConfiguration {
@@ -56,6 +56,14 @@ public class SecurityConfiguration {
                         .jwtAuthenticationConverter(new FintJwtUserConverter()));
         return http.build();
     }
+}
+```
+
+## Example: Convert a Jwt to a user principal
+```java
+@GetMapping
+public ResponseEntity<FintJwtEndUserPrincipal> getLatestIntegrationConfigurations(@AuthenticationPrincipal Jwt jwt) {
+    return ResponseEntity.ok(FintJwtEndUserPrincipal.from(jwt));
 }
 ```
 
