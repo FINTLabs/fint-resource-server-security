@@ -1,0 +1,60 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'org.springframework.boot' version '2.6.5' apply false
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'groovy'
+    id 'maven-publish'
+    id 'java-library'
+}
+
+//group = 'no.vigoiks.fint'
+sourceCompatibility = '17'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url "https://repo.fintlabs.no/releases"
+    }
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.5'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'cglib:cglib-nodep:3.3.0'
+    testImplementation 'org.spockframework:spock-spring:2.1-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+//apply from: 'https://raw.githubusercontent.com/FINTLabs/fint-buildscripts/master/reposilite.ga.gradle'
